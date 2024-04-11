@@ -7,6 +7,7 @@
 
 unsigned long previousTime = millis();
 uint16_t timeInterval = 500; // time in milliseconds between measurements
+unsigned long resetTime = 0;
 
 
 HX711_MP scale(4); // Set # of calibration points
@@ -62,9 +63,9 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  motor.writeMicroseconds(dataNumber);
   recvWithEndMarker();
   showNewNumber();
+  motor.writeMicroseconds(dataNumber);
   measure();
   
 }
@@ -74,10 +75,9 @@ void measure() {
   if (currentTime - previousTime > timeInterval) {
     previousTime = currentTime;
     f = scale.get_units(5);
-    Serial.print(currentTime);
+    Serial.print(millis() - resetTime);
     Serial.print(",");
     Serial.println(f);
-  
   }
 }
 
@@ -112,6 +112,10 @@ void showNewNumber() {
     Serial.print("Data as Number ... ");  // new for this version
     Serial.println(dataNumber);           // new for this version
     newData = false;
+    if (dataNumber == 0) {
+      Serial.println("Resetting time...");
+      resetTime = millis();
+    }
   }
 }
 
