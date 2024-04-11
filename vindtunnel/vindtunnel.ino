@@ -74,6 +74,8 @@ void measure() {
   if (currentTime - previousTime > timeInterval) {
     previousTime = currentTime;
     f = scale.get_units(5);
+    Serial.print(currentTime);
+    Serial.print(",");
     Serial.println(f);
   
   }
@@ -112,3 +114,5 @@ void showNewNumber() {
     newData = false;
   }
 }
+
+
