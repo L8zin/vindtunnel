@@ -6,7 +6,7 @@
 #define CLOCK_PIN 7 // Pin lableled SCK on HX711
 
 unsigned long previousTime = millis();
-uint16_t timeInterval = 500;
+uint16_t timeInterval = 500; // time in milliseconds between measurements
 
 
 HX711_MP scale(4); // Set # of calibration points
@@ -25,6 +25,9 @@ int dataNumber = 0;  // new for this version
 
 
 void setup() {
+
+  motor.attach(MOTOR_PIN, 1000, 2000);
+  motor.writeMicroseconds(0);
 
   Serial.begin(9600);
   Serial.println();
@@ -46,26 +49,33 @@ void setup() {
     Serial.print("\t");
     Serial.println(scale.testCalibration(raw));
   }
-  Serial.println("Calibrattion complete");
-  motor.attach(MOTOR_PIN);
-  Serial.println("plug in ECU and press enter");
-  while (!Serial.available())
+  Serial.println("Calibration complete.");
+  Serial.println("Plug in ECU and press enter.");
+  while (!Serial.available() || !motor.attached())
     ;
   Serial.read();
-  Serial.println("starting");
+  Serial.println("Starting...");
   delay(1000);
+  Serial.println("Ready to go.");
+  delay(500);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  unsigned long currentTime = millis();
   motor.writeMicroseconds(dataNumber);
   recvWithEndMarker();
   showNewNumber();
+  measure();
+  
+}
+
+void measure() {
+  unsigned long currentTime = millis();
   if (currentTime - previousTime > timeInterval) {
     previousTime = currentTime;
     f = scale.get_units(5);
     Serial.println(f);
+  
   }
 }
 
