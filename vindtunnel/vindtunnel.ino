@@ -1,27 +1,15 @@
-//
-//    FILE: HX_MP_plotter.ino
-//  AUTHOR: Rob Tillaart
-// PURPOSE: HX711 demo
-//     URL: https://github.com/RobTillaart/HX711_MP
-
-
 #include "HX711_MP.h"
 #include "Servo.h"
 
-#define MOTOR_PIN 10
-#define DATA_PIN 4
-#define CLOCK_PIN 7
+#define MOTOR_PIN 10 // Pin for ECU control signal
+#define DATA_PIN 4 // Pin lableled DT on HX711
+#define CLOCK_PIN 7 // Pin lableled SCK on HX711
 
 unsigned long previousTime = millis();
 uint16_t timeInterval = 500;
 
 
-HX711_MP scale(4);
-
-
-//  adjust pins to your setup.
-uint8_t dataPin = 4;
-uint8_t clockPin = 7;
+HX711_MP scale(4); // Set # of calibration points
 
 volatile float f;
 
@@ -38,11 +26,11 @@ int dataNumber = 0;  // new for this version
 
 void setup() {
 
-  Serial.begin(115200);
-  Serial.println()
+  Serial.begin(9600);
+  Serial.println();
 
 
-  scale.begin(dataPin, clockPin);
+  scale.begin(DATA_PIN, CLOCK_PIN);
 
   //  Calibration
   //  adjust the data to your measurements
@@ -52,17 +40,15 @@ void setup() {
   scale.setCalibrate(2, 447330, 23);
   scale.setCalibrate(3, 1005446, 67);
 
-  for (uint32_t raw = 0; raw <= 00; raw += 1000) {
+  Serial.println("Calibration values:");
+  for (uint32_t raw = 30000; raw <= 1500000; raw += 10000) {
     Serial.print(raw);
     Serial.print("\t");
     Serial.println(scale.testCalibration(raw));
   }
-  delay(5000);
-
-  Serial.println("init");
+  Serial.println("Calibrattion complete");
   motor.attach(MOTOR_PIN);
-  delay(500);
-  Serial.println("plug in motor and press enter");
+  Serial.println("plug in ECU and press enter");
   while (!Serial.available())
     ;
   Serial.read();
