@@ -27,7 +27,7 @@ int dataNumber = 0;  // new for this version
 
 void setup() {
 
-  motor.attach(MOTOR_PIN, 1000, 2000);
+  motor.attach(MOTOR_PIN);
   motor.writeMicroseconds(0);
 
   Serial.begin(9600);
@@ -52,20 +52,22 @@ void setup() {
   }
   Serial.println("Calibration complete.");
   Serial.println("Plug in ECU and press enter.");
-  while (!Serial.available() || !motor.attached())
+  while (!Serial.available() )
     ;
   Serial.read();
   Serial.println("Starting...");
+  motor.attach(MOTOR_PIN);
   delay(1000);
+  motor.writeMicroseconds(0);
   Serial.println("Ready to go.");
   delay(500);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  motor.writeMicroseconds(dataNumber);
   recvWithEndMarker();
   showNewNumber();
-  motor.writeMicroseconds(dataNumber);
   measure();
   
 }
