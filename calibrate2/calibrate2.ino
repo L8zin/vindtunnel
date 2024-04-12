@@ -10,7 +10,7 @@ uint16_t timeInterval = 500; // time in milliseconds between measurements
 unsigned long resetTime = 0;
 
 
-HX711_MP scale(4); // Set # of calibration points
+HX711_MP scale(2); // Set # of calibration points
 
 volatile float f;
 
@@ -33,21 +33,6 @@ void setup() {
 
   scale.begin(DATA_PIN, CLOCK_PIN);
 
-  //  Calibration
-  //  adjust the data to your measurements
-  //  setCalibrate(index, rawRead, weight);
-  scale.setCalibrate(0, 45955, 0);
-  scale.setCalibrate(1, 342957, 14);
-  scale.setCalibrate(2, 447330, 23);
-  scale.setCalibrate(3, 1005446, 67);
-
-  Serial.println("Calibration values:");
-  for (uint32_t raw = 30000; raw <= 1500000; raw += 10000) {
-    Serial.print(raw);
-    Serial.print("\t");
-    Serial.println(scale.testCalibration(raw));
-  }
-  Serial.println("Calibration complete.");
   Serial.println("Plug in ECU and press enter.");
   while (!Serial.available() )
     ;
@@ -73,9 +58,7 @@ void measure() {
   unsigned long currentTime = millis();
   if (currentTime - previousTime > timeInterval) {
     previousTime = currentTime;
-    f = scale.get_units(5);
-    Serial.print(millis() - resetTime);
-    Serial.print(",");
+    f = scale.get_value(5);
     Serial.println(f);
   }
 }
@@ -111,10 +94,6 @@ void showNewNumber() {
     Serial.print("Data as Number ... ");  // new for this version
     Serial.println(dataNumber);           // new for this version
     newData = false;
-    if (dataNumber == 0) {
-      Serial.println("Resetting time...");
-      resetTime = millis();
-    }
   }
 }
 

@@ -14,8 +14,8 @@ HX711_MP scale(2);
 
 
 //  adjust pins to your setup.
-uint8_t dataPin = 4;
-uint8_t clockPin = 7;
+uint8_t dataPin = 2;
+uint8_t clockPin = 8;
 
 
 uint32_t start, stop;
