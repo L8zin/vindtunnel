@@ -2,8 +2,8 @@
 #include "Servo.h"
 
 #define MOTOR_PIN 10 // Pin for ECU control signal
-#define DATA_PIN 4 // Pin lableled DT on HX711
-#define CLOCK_PIN 7 // Pin lableled SCK on HX711
+#define DATA_PIN 4 // Pin lableled DT on HX711 (Yellow)
+#define CLOCK_PIN 7 // Pin lableled SCK on HX711 (Blue)
 
 unsigned long previousTime = millis();
 uint16_t timeInterval = 500; // time in milliseconds between measurements
