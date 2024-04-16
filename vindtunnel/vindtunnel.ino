@@ -36,10 +36,10 @@ void setup() {
   //  Calibration
   //  adjust the data to your measurements
   //  setCalibrate(index, rawRead, weight);
-  scale.setCalibrate(0, 45955, 0);
-  scale.setCalibrate(1, 342957, 14);
-  scale.setCalibrate(2, 447330, 23);
-  scale.setCalibrate(3, 1005446, 67);
+  scale.setCalibrate(0, 1068114, 0);
+  scale.setCalibrate(1, 1151788, 36);
+  scale.setCalibrate(2, 1205796, 51);
+  scale.setCalibrate(3, 1215950, 59);
 
   Serial.println("Calibration values:");
   for (uint32_t raw = 30000; raw <= 1500000; raw += 10000) {
