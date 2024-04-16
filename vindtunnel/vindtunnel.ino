@@ -1,7 +1,7 @@
 #include "HX711_MP.h"
 #include "Servo.h"
 
-#define MOTOR_PIN 11 // Pin for ECU control signal
+#define MOTOR_PIN 11 // Pin for ESC control signal
 #define DATA_PIN 4 // Pin lableled DT on HX711 (Yellow)
 #define CLOCK_PIN 7 // Pin lableled SCK on HX711 (Blue)
 
@@ -48,7 +48,7 @@ void setup() {
     Serial.println(scale.testCalibration(raw));
   }
   Serial.println("Calibration complete.");
-  Serial.println("Plug in ECU and press enter.");
+  Serial.println("Plug in ESC and press enter.");
   while (!Serial.available() )
     ;
   Serial.read();
